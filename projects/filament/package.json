@@ -1,0 +1,21 @@
+{
+  "name": "filament",
+  "version": "0.1.1",
+  "private": true,
+  "description": "",
+  "main": "dist/filament.development.js",
+  "scripts": {
+    "build": "NODE_ENV=production $(npm bin)/rollup --config rollup.config.js",
+    "start": "NODE_ENV=development $(npm bin)/rollup --config rollup.config.js --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Martin Feineis",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "eslint": "^5.10.0",
+    "rollup": "^0.67.4",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0"
+  },
+  "dependencies": {}
+}
