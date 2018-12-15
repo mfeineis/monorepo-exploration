@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>IntlElements Demo Page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.0.2/webcomponents-bundle.js"></script>
+    <script type="application/json" data-intl-locale="es-ES">
+        {
+            "some.otherKey": "Que rico! {price, number, USD}",
+            "some.placeholder": "No se como se llama esto..."
+        }
+    </script>
+    <script src="../dist/intl-elements.js"></script>
+    <script>
+
+     IntlElements.defineContext({
+         defaultLocale: "en-US",
+         defaultMessages: {
+             "some.otherKey": "Great! {price, number, USD}",
+             "some.placeholder": "Placeholder text...",
+         },
+         //includeLangSettings,
+         key: "user-defined-key",
+         supportedLocales: {
+             "en": "en-US",
+             "en-US": "en-US",
+             "es": "es-ES",
+             "es-ES": "es-ES",
+         },
+         loadTranslation: locale => Promise.resolve(
+             //{
+             //    "some.otherKey": "Que rico! {price, number, USD}",
+             //    "some.placeholder": "No se como se llama esto...",
+             //}
+             JSON.parse(
+                document.querySelector(`script[data-intl-locale="${locale}"`).innerText
+             )
+         ),
+         locale: "es-ES"
+         //setDocumentLang,
+     });
+
+    </script>
+</head>
+<body>
+    <intl-context context-key="user-defined-key">
+        <intl-element intl='{ "select": "input.other-class", "key": "some.otherKey", "values": { "price": 3.14159 }, "attribute": "placeholder" }'>
+            <input class="some-class" type="text" placeholder="omg" />
+            <input class="other-class" type="text" />
+            <input class="other-class" type="text" />
+        </intl-element>
+
+        <intl-element intl='{ "key": "some.otherKey", "values": { "price": 3.14159 } }'></intl-element>
+    </intl-context>
+
+    <script src="./dist/app.js"></script>
+    <script>
+
+    var i18nKey = IntlElements.defineContext({
+        defaultLocale: "en-US",
+        defaultMessages: {
+            "some.otherKey": "Great! {price, number, USD}",
+            "some.placeholder": "Placeholder text...",
+        },
+        //includeLangSettings,
+        //key,
+        supportedLocales: {
+            "en": "en-US",
+            "en-US": "en-US",
+            "es": "es-ES",
+            "es-ES": "es-ES",
+        },
+        loadTranslation: locale => Promise.resolve(
+            {
+                "some.otherKey": "Que rico! {price, number, USD}",
+                "some.placeholder": "No se como se llama esto...",
+            }
+        ),
+        locale: "es-ES"
+        //setDocumentLang,
+    });
+
+    var app = Elm.Main.init({
+       flags: i18nKey,
+    });
+
+    //app.ports.changeLocale.subscribe(value => {
+    //    IntlElements.changeLocale(value);
+    //});
+
+    </script>
+</body>
+</html>

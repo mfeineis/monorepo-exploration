@@ -1,0 +1,41 @@
+{
+  "name": "intl-elements",
+  "version": "0.1.0",
+  "description": "Easy internationalization with webcomponents",
+  "main": "dist/intl-elements.development.js",
+  "scripts": {
+    "build": "rollup --config rollup.config.js",
+    "elm:build": "cd demo && private/elm make src/Main.elm --output=dist/app.js && cd ..",
+    "elm:prepare": "cp ./private/elm $(npm bin)/elm",
+    "start": "npm run build && npm run elm:prepare && npm run elm:build && http-server -p 8081 .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "rollup --config rollup.config.js --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mfeineis/intl-elements.git"
+  },
+  "keywords": [
+    "i18n",
+    "webcomponents"
+  ],
+  "author": "Martin Feineis",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/mfeineis/intl-elements/issues"
+  },
+  "homepage": "https://github.com/mfeineis/intl-elements#readme",
+  "dependencies": {
+    "intl-format-cache": "^2.1.0",
+    "intl-messageformat": "^2.2.0",
+    "ramda": "^0.26.1"
+  },
+  "devDependencies": {
+    "elm": "^0.19.0-bugfix2",
+    "eslint": "^5.10.0",
+    "http-server": "^0.11.1",
+    "rollup": "^0.67.4",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0"
+  }
+}
