@@ -1,7 +1,7 @@
 // FIXME: OMG, please validate this thoroughly
-export const validateMeta = meta => meta && meta["element"] && meta["fragment"];
+export const validateMeta = (meta) => meta && meta["element"] && meta["fragment"];
 
-export function configureRuntime(configureLoader, customElements, setTimeout) {
+export function configureRuntime(configureLoader, customElements, setTimeout, query, router) {
 
     const state = {
         elements: {},
@@ -9,7 +9,7 @@ export function configureRuntime(configureLoader, customElements, setTimeout) {
     };
 
     // FIXME: OMG, side-effects in a filter...
-    const dispatchQueue = meta => {
+    const dispatchQueue = (meta) => {
         state.queue = state.queue.filter(({ element, next }) => {
             if (meta.element === element) {
                 setTimeout(() => requestFragment(element, next), 0);
@@ -21,7 +21,7 @@ export function configureRuntime(configureLoader, customElements, setTimeout) {
     };
 
     // FIXME: Validation, validation, validation...
-    const declare = meta => {
+    const declare = (meta) => {
         console.log('runtime.declare', meta);
 
         if (state.elements[meta.element]) {
@@ -40,7 +40,32 @@ export function configureRuntime(configureLoader, customElements, setTimeout) {
             meta,
         };
 
-        function connectFragment(element, meta) {
+        if (meta.enhance) {
+            // FIXME: Error handling for routes!
+            const addRoute = (routes, selectHost) => {
+                router.add(routes, (route) => {
+                    const { host, props } = selectHost(route, query);
+
+                    if (!host) {
+                        // eslint-disable-next-line no-console
+                        console.warn(`[router] route match`, route, 'with invalid host');
+                        return;
+                    }
+
+                    // eslint-disable-next-line no-console
+                    console.log(`[router] route match`, route, 'into', host);
+                    const attrs = Object.keys(props).map((key) => {
+                        return ` ${key}=${props[key]}`;
+                    }).join("");
+
+                    host.innerHTML = `<${meta.element}${attrs}></${meta.element}>`;
+                });
+            };
+
+            meta.enhance({ route: addRoute });
+        }
+
+        const connectFragment = (element, meta) => {
             const attrs = {};
 
             for (let name of meta.observe) {
