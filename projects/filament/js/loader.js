@@ -1,3 +1,4 @@
+/* eslint-disable */
 const { add, use } = (function (module) {
     ////Define a require object here that has any
     ////default configuration you want for RequireJS. If
